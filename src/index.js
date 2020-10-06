@@ -37,27 +37,50 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
-function decode(expr) {
-    let arr = [];
-    let str = '';
-    arr = expr.match(/.{1,10}/g);
-    
-    const copy = arr.map((item, idx) => {
-      return item.replaceAll(/00/g, '').replaceAll(/10/g, '.').replaceAll(/11/g, '-').replaceAll('**********', ' ')
-    })
-    
-    copy.forEach((item, idx) => {
-      if(item === ' '){
-        str += item;
-      }
-      for(let key in MORSE_TABLE){
-        if(key === item){
-          str += MORSE_TABLE[key];
-        }
-      }
-    }); 
 
-    return str;
+function decode(expr) {
+  let arr = [];
+  let str = '';
+  arr = expr.match(/.{1,10}/g);
+
+  
+  arr = arr.map( (item) => {
+  if(item === '**********'){
+    item = " ";
+  }
+  
+    return item = item.match(/.{1,2}/g).map(item => {
+     if(item === '00'){
+      return item = '';
+    }else if(item === '10'){
+      return item = '.';
+    }else if(item === '11'){
+      return item = '-';
+    }else{
+      return item = ' ';
+    }
+   });
+   
+   
+    
+  } )
+  
+  let copy =  [...arr];
+  
+copy.map(item => {
+  	item = item.join('');
+    if(item === ' '){
+      str += item;
+    }
+    for(let key in MORSE_TABLE){
+      if(key === item){
+        str += MORSE_TABLE[key];
+      }
+    }
+  })
+
+
+  return str;
 }
 
 module.exports = {
